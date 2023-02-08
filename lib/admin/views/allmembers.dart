@@ -44,7 +44,9 @@ class _MembersState extends State<Members> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Members (${controller.allUsers.length})"),
+        title: GetBuilder<UserController>(builder:(controller){
+          return Text("Members (${controller.allUsers.length})");
+        }),
         actions: [
           IconButton(
             icon:const Icon(Icons.add_circle_rounded,size: 30,),
