@@ -1,11 +1,18 @@
+import 'dart:async';
+
 import 'package:animate_do/animate_do.dart';
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:gracegatechapel/constants/app_colors.dart';
 import 'package:gracegatechapel/controllers/announcements_controller.dart';
 
+import '../../controllers/checkin_controller.dart';
 import '../../controllers/devotion_controller.dart';
+import '../../controllers/events_controller.dart';
+import '../../controllers/notificationController.dart';
+import '../../controllers/userController.dart';
 import '../../views/announcements.dart';
 import '../../views/devotions.dart';
 
@@ -19,10 +26,50 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
 
+  final storage = GetStorage();
+  late String username = "";
+  late String uToken = "";
   DevotionController dController = Get.find();
   AnnouncementController aController = Get.find();
+  NotificationController notificationController = Get.find();
+  CheckInController checkInController = Get.find();
+  UserController userController = Get.find();
+  EventController eventController = Get.find();
+  late Timer _timer;
   var items;
   var announceItems;
+
+  @override
+  void initState(){
+    super.initState();
+    if (storage.read("userToken") != null) {
+      uToken = storage.read("userToken");
+    }
+    if (storage.read("username") != null) {
+      username = storage.read("username");
+    }
+    aController.getAnnouncements(uToken);
+    checkInController.getCheckInsToday(uToken);
+    // userController.getUserProfile(uToken);
+    userController.getAllUsers(uToken);
+    // userController.getUserDetails(uToken);
+    eventController.getEvents(uToken);
+    dController.getDevotions(uToken);
+    // notificationController.getAllNotifications(uToken);
+    // notificationController.getAllUnReadNotifications(uToken);
+
+    _timer = Timer.periodic(const Duration(seconds: 20), (timer){
+      aController.getAnnouncements(uToken);
+      checkInController.getCheckInsToday(uToken);
+      // userController.getUserProfile(uToken);
+      userController.getAllUsers(uToken);
+      // userController.getUserDetails(uToken);
+      eventController.getEvents(uToken);
+      dController.getDevotions(uToken);
+      // notificationController.getAllNotifications(uToken);
+      // notificationController.getAllUnReadNotifications(uToken);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

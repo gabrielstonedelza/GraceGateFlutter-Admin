@@ -41,11 +41,6 @@ class _AdminBottomNavigationBarState extends State<AdminBottomNavigationBar> {
   bool hasInternet = false;
   late StreamSubscription internetSubscription;
   NotificationController notificationController = Get.find();
-  AnnouncementController announcementController = Get.find();
-  CheckInController checkInController = Get.find();
-  UserController userController = Get.find();
-  EventController eventController = Get.find();
-  DevotionController devotionController = Get.find();
 
   late List allBlockedUsers = [];
   late List blockedUsernames = [];
@@ -161,27 +156,6 @@ class _AdminBottomNavigationBarState extends State<AdminBottomNavigationBar> {
       username = storage.read("username");
     }
     pageController = PageController(initialPage: selectedIndex);
-    announcementController.getAnnouncements(uToken);
-    checkInController.getCheckInsToday(uToken);
-    // userController.getUserProfile(uToken);
-    userController.getAllUsers(uToken);
-    // userController.getUserDetails(uToken);
-    eventController.getEvents(uToken);
-    devotionController.getDevotions(uToken);
-    // notificationController.getAllNotifications(uToken);
-    // notificationController.getAllUnReadNotifications(uToken);
-
-    _timer = Timer.periodic(const Duration(seconds: 20), (timer){
-      announcementController.getAnnouncements(uToken);
-      checkInController.getCheckInsToday(uToken);
-      // userController.getUserProfile(uToken);
-      userController.getAllUsers(uToken);
-      // userController.getUserDetails(uToken);
-      eventController.getEvents(uToken);
-      devotionController.getDevotions(uToken);
-      // notificationController.getAllNotifications(uToken);
-      // notificationController.getAllUnReadNotifications(uToken);
-    });
 
     getAllTriggeredNotifications();
 

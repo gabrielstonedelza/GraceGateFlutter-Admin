@@ -62,7 +62,7 @@ class _AddDevotionState extends State<AddDevotion> {
       Get.offAll(const AdminBottomNavigationBar());
 
     } else {
-      print(response.body);
+    
       Get.snackbar("Sorry 😢", response.body,
           duration: const Duration(seconds: 5),
           snackPosition: SnackPosition.BOTTOM,
